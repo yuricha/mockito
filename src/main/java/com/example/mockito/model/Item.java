@@ -16,8 +16,10 @@ public class Item {
 	private int quantity;
 	
 	@Transient
-	private int value;
-	
+	private Double value;
+	public Item() {
+		
+	}
 	public Item(int id, String name, Double price, int quantity) {
 		
 		this.id = id;
@@ -58,14 +60,16 @@ public class Item {
 		this.quantity = quantity;
 	}
 	
-	public int getValue() {
+	public Double getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
-
+	public Double geValueItem() {
+		return this.quantity*this.price;
+	}
 	public String toString() {
 		return String.format("Item[%d, %s,%d,%d]", id,name,price,quantity);
 	}

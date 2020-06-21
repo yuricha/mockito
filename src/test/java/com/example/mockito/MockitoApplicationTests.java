@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ public class MockitoApplicationTests {
 	
 	
 	/*
-	 * test with json and get controller
+	 * test with json and get business
 	 */
 	@Test
 	void dummytest_business() throws Exception{
@@ -93,6 +95,25 @@ public class MockitoApplicationTests {
 		MvcResult result=mockMvc.perform(request)
 				.andExpect(status().isOk())
 				.andExpect(content().json("{ \"id\":2,name:\"Item 2\",\"price\":10.0, \"quantity\":200}"))
+				.andReturn();
+	}
+	
+	/*
+	 * test with json and get repository
+	 */
+	@Test
+	void dummytest_business_repository() throws Exception{
+		
+		when(itemBusinessService.retrieveAllItems()).thenReturn(
+					Arrays.asList(new Item(2,"Item 2",10.0,200))
+					);
+		
+		RequestBuilder request = MockMvcRequestBuilders
+				.get("/all-items-from-database")
+				.accept(MediaType.APPLICATION_JSON);
+		MvcResult result=mockMvc.perform(request)
+				.andExpect(status().isOk())//isCreated for post,or another
+				.andExpect(content().json("[{ \"id\":2,name:\"Item 2\",\"price\":10.0, \"quantity\":200}]"))
 				.andReturn();
 	}
 }
